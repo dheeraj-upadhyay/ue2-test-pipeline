@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "projects": {
+    "ue2-test-pipeline": {
+      "projectType": "application",
+      "root": "apps/ue2-test-pipeline",
+      "sourceRoot": "apps/ue2-test-pipeline/src",
+      "prefix": "ukg",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/ue2-test-pipeline",
+            "index": "apps/ue2-test-pipeline/src/index.html",
+            "main": "apps/ue2-test-pipeline/src/main.ts",
+            "polyfills": "apps/ue2-test-pipeline/src/polyfills.ts",
+            "tsConfig": "apps/ue2-test-pipeline/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "apps/ue2-test-pipeline/src/favicon.ico",
+              "apps/ue2-test-pipeline/src/assets"
+            ],
+            "styles": ["apps/ue2-test-pipeline/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/ue2-test-pipeline/src/environments/environment.ts",
+                  "with": "apps/ue2-test-pipeline/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "ue2-test-pipeline:build:production"
+            },
+            "development": {
+              "browserTarget": "ue2-test-pipeline:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "ue2-test-pipeline:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/ue2-test-pipeline/src/**/*.ts",
+              "apps/ue2-test-pipeline/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/ue2-test-pipeline"],
+          "options": {
+            "jestConfig": "apps/ue2-test-pipeline/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "ue2-test-pipeline-e2e": {
+      "root": "apps/ue2-test-pipeline-e2e",
+      "sourceRoot": "apps/ue2-test-pipeline-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/ue2-test-pipeline-e2e/cypress.json",
+            "devServerTarget": "ue2-test-pipeline:serve:development"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "ue2-test-pipeline:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/ue2-test-pipeline-e2e/**/*.{js,ts}"]
+          }
+        }
+      },
+      "tags": [],
+      "implicitDependencies": ["ue2-test-pipeline"]
+    }
+  }
+}
